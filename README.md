@@ -54,6 +54,7 @@ Future Enhancements
 Include user-generated content features
 POO & NPM
 Clean files structure
+**Agregar aquí fotos y/o video**
 
 ## Installation & Setup
 

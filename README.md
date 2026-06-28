@@ -46,15 +46,15 @@ The project follows a mobile-first approach with the following breakpoints:
 
 This project was developed following the BEM (Block Element Modifier) methodology for a better organization and includes:
 
-Semantic HTML structure
-Mobile-first responsive design
-Optimized images and assets
-Clean, maintainable code
-Future Enhancements
-Include user-generated content features
-POO & NPM
-Clean files structure
-**Agregar aquí fotos y/o video**
+- Semantic HTML structure
+- Mobile-first responsive design
+- Optimized images and assets
+- Clean, maintainable code
+- Future Enhancements
+- Include user-generated content features
+- POO & NPM
+- Clean files structure
+- **Agregar aquí fotos y/o video**
 
 ## Installation & Setup
 

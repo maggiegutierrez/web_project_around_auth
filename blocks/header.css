@@ -7,8 +7,8 @@
 }
 
 .header__logo {
-  width: 173px;
-  height: 33px;
+  width: 193px;
+  height: 53px;
   object-fit: contain;
 }
 
@@ -18,8 +18,8 @@
   }
 
   .header__logo {
-    width: 126px;
-    height: 24px;
+    width: 156px;
+    height: 54px;
     margin: 0 0 0 7px;
   }
 }

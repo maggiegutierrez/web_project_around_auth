@@ -1,12 +1,17 @@
+import { useEffect, useState } from "react";
+import CurrentUserContext from "../contexts/CurrentUserContext";
+
 import Header from "./Header/Header";
 import Main from "./Main/Main";
 import Footer from "./Footer/Footer";
-import { useEffect, useState } from "react";
-import CurrentUserContext from "../contexts/CurrentUserContext";
+
 import api from "../utils/api";
 import Popup from "../components/Main/components/popup/Popup";
 import Card from "./Main/components/Card/Card";
 import NewCard from "./Main/components/popup/NewCard/NewCard";
+
+import * as auth from "../utils/auth";
+
 function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [popup, setPopup] = useState(null);

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import Logo from "./Logo";
-import "./styles/Login.css";
+import Logo from "../../../../../images/logo.png";
+import "../../../../../blocks/login.css";
 
 const Login = ({ handleLogin }) => {
   const [data, setData] = useState({
@@ -24,10 +24,9 @@ const Login = ({ handleLogin }) => {
 
   return (
     <div className="login">
-      <Logo title={"CryptoDucks"} />
       <p className="login__welcome">Inicia Sesión</p>
       <form className="login__form" onSubmit={handleSubmit}>
-        <label htmlFor="username">Correo electrónico</label>
+        <label htmlFor="email">Correo electrónico</label>
         <input
           id="email"
           required
@@ -54,7 +53,7 @@ const Login = ({ handleLogin }) => {
 
       <div className="login__signup">
         <p>¿Aún no eres miembro?</p>
-        <Link to="/register" className="signup__link">
+        <Link to="/signup" className="signup__link">
           Regístrate aquí
         </Link>
       </div>

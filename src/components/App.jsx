@@ -1,4 +1,11 @@
 import { useEffect, useState } from "react";
+import {
+  Routes,
+  Route,
+  Navigate,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 
 import Header from "./Header/Header";
@@ -9,14 +16,49 @@ import api from "../utils/api";
 import Popup from "../components/Main/components/popup/Popup";
 import Card from "./Main/components/Card/Card";
 import NewCard from "./Main/components/popup/NewCard/NewCard";
+import Login from "./Main/components/Login/Login";
 
 import * as auth from "../utils/auth";
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
   const [popup, setPopup] = useState(null);
 
   const [cards, setCards] = useState([]);
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleRegistration = ({ email, password }) => {
+    return auth
+      .register(email, password)
+      .then(() => {
+        console.log("Registration successful");
+        navigate("/signin");
+      })
+      .catch(console.error);
+  };
+
+  const handleLogin = ({ email, password }) => {
+    console.log("hanndleLogin está ocurriendo");
+    if (!email || !password) {
+      return;
+    }
+
+    auth
+      .authorize(email, password)
+      .then((data) => {
+        if (data.token) {
+          setCurrentUser(data.user);
+          setIsLoggedIn(true);
+
+          const redirectPath = location.state?.from?.pathname || "/";
+          navigate(redirectPath);
+        }
+      })
+      .catch(console.error);
+  };
 
   function handleOpenPopup(popup) {
     setPopup(popup);

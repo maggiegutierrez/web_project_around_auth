@@ -159,6 +159,27 @@
   margin: 0;
 }
 
+.popup__info-tooltip {
+  display: flex;
+  flex-direction: column;
+}
+
+.popup__image-info-tooltip {
+  margin-top: 26px;
+  width: 120px;
+  height: 120px;
+  align-self: center;
+}
+
+.popup__title-info-tooltip {
+  margin-top: 32px;
+  margin-bottom: 0px;
+  font-size: 24px;
+  font-weight: 900;
+  line-height: 30px;
+  text-align: center;
+}
+
 @media screen and (max-width: 544px) {
   .popup {
     bottom: 112px;

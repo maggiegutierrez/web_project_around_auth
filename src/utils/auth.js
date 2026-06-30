@@ -39,23 +39,20 @@ export const authorize = (email, password) => {
     });
 };
 
-export const getToken = (email) => {
+export const login = () => {
   return fetch(`${BASE_URL}/users/me`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${TOKEN_KEY}`,
+      Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
     },
-    body: JSON.stringify({
-      email: email,
-    }),
-  })
-    .then((res) => {
-      return res.ok
-        ? res.json()
-        : Promise.reject(`Error al reconocer al usuario  ${res.status}`);
-    })
-    .then((data) => {
-      return localStorage.getItem(TOKEN_KEY, data.token);
-    });
+  }).then((res) => {
+    return res.ok
+      ? res.json()
+      : Promise.reject(`Error al reconocer al usuario  ${res.status}`);
+  });
+};
+
+export const logout = () => {
+  return localStorage.removeItem(TOKEN_KEY);
 };

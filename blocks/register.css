@@ -1,0 +1,57 @@
+.register {
+  flex-shrink: 0;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Inter", Arial, sans-serif;
+  color: #fff;
+}
+
+.register__tittle {
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  margin: 60px 0 50px;
+}
+
+.register__form {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: 358px;
+  height: 350px;
+  color: #fff;
+}
+
+.register__button {
+  background-color: #fff;
+  font-weight: 400;
+  font-size: 18px;
+  height: 50px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  border: 0;
+  padding: 0;
+  margin-top: auto;
+  justify-content: flex-end;
+  cursor: pointer;
+}
+
+.register__button:hover {
+  opacity: 0.7;
+  transition: opacity 0.4s ease;
+}
+
+.register__signup {
+  font-weight: 400;
+  font-size: 14px;
+  margin-top: 15px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 358px;
+  height: 17px;
+}

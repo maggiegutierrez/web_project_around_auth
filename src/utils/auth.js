@@ -35,7 +35,8 @@ export const authorize = (email, password) => {
         : Promise.reject(`Error en el inicio de sesión ${res.status}`);
     })
     .then((data) => {
-      return localStorage.setItem(TOKEN_KEY, data.token);
+      localStorage.setItem(TOKEN_KEY, data.token);
+      return data;
     });
 };
 

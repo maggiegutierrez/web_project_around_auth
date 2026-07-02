@@ -4,12 +4,20 @@
   display: flex;
   align-items: center;
   border-bottom: 1px solid rgba(84, 84, 84, 0.7);
+  justify-content: space-between;
 }
 
 .header__logo {
   width: 193px;
   height: 53px;
   object-fit: contain;
+}
+
+.header__link {
+  text-decoration: none;
+  color: #fff;
+  font-size: 18px;
+  max-width: 111px;
 }
 
 @media screen and (max-width: 544px) {

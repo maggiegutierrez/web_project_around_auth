@@ -17,6 +17,7 @@ import Popup from "../components/Main/components/popup/Popup";
 import Card from "./Main/components/Card/Card";
 import NewCard from "./Main/components/popup/NewCard/NewCard";
 import Login from "./Main/components/Login/Login";
+import Register from "./Main/components/Register/Register";
 
 import * as auth from "../utils/auth";
 
@@ -50,12 +51,30 @@ function App() {
       .authorize(email, password)
       .then((data) => {
         if (data.token) {
-          setCurrentUser(data.user);
-          setIsLoggedIn(true);
-
-          const redirectPath = location.state?.from?.pathname || "/";
-          navigate(redirectPath);
+          return auth.login();
         }
+      })
+      .then((userData) => {
+        setCurrentUser(userData);
+        setIsLoggedIn(true);
+
+        const redirectPath = location.state?.from?.pathname || "/";
+        navigate(redirectPath);
+      })
+      .catch((error) => {
+        console.error(error);
+        alert(
+          "Error en el inicio de sesión. Por favor, verifica tus credenciales.",
+        );
+      });
+  };
+
+  const handleLogout = () => {
+    return auth
+      .logout()
+      .then(() => {
+        console.log("User logged out successfully");
+        navigate("/signin");
       })
       .catch(console.error);
   };
@@ -143,15 +162,35 @@ function App() {
       }}
     >
       <div className="page__content">
-        <Header />
-        <Main
-          onOpenPopup={handleOpenPopup}
-          onClosePopup={handleClosePopup}
-          popup={popup}
-          cards={cards}
-          onCardLike={handleCardLike}
-          onCardDelete={confirmationCardDelete}
+        <Header
+          currentUser={currentUser}
+          isLoggedIn={isLoggedIn}
+          onLogout={handleLogout}
         />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              isLoggedIn ? (
+                <Main
+                  onOpenPopup={handleOpenPopup}
+                  onClosePopup={handleClosePopup}
+                  popup={popup}
+                  cards={cards}
+                  onCardLike={handleCardLike}
+                  onCardDelete={confirmationCardDelete}
+                />
+              ) : (
+                <Navigate to="/signin" replace />
+              )
+            }
+          />
+          <Route path="/signin" element={<Login handleLogin={handleLogin} />} />
+          <Route
+            path="/signup"
+            element={<Register handleRegistration={handleRegistration} />}
+          />
+        </Routes>
         <Footer />
       </div>
     </CurrentUserContext.Provider>

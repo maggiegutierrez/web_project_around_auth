@@ -1,3 +1,5 @@
+const TOKEN_KEY = "jwt";
+
 class API {
   constructor({ baseURL, headers }) {
     this._baseURL = baseURL;
@@ -112,16 +114,12 @@ class API {
       return Promise.reject(res.status);
     });
   }
-
-  /*getWebData() {
-    return Promise.all([this.getUserData(), this.getInitialCards()]);
-  }*/
 }
 
 const api = new API({
   baseURL: "https://around-api.es.tripleten-services.com/v1",
   headers: {
-    authorization: "98bc7c1d-eb51-4075-89db-ccaa5c9b5069",
+    Authorization: "98bc7c1d-eb51-4075-89db-ccaa5c9b5069",
     "Content-Type": "application/json",
   },
 });

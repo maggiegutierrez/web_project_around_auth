@@ -55,5 +55,5 @@ export const login = () => {
 };
 
 export const logout = () => {
-  return localStorage.removeItem(TOKEN_KEY);
+  return Promise.resolve(localStorage.removeItem(TOKEN_KEY));
 };

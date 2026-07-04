@@ -13,11 +13,9 @@ import Main from "./Main/Main";
 import Footer from "./Footer/Footer";
 
 import api from "../utils/api";
-import Popup from "../components/Main/components/popup/Popup";
-import Card from "./Main/components/Card/Card";
-import NewCard from "./Main/components/popup/NewCard/NewCard";
 import Login from "./Main/components/Login/Login";
 import Register from "./Main/components/Register/Register";
+import InfoTooltip from "../components/Main/components/popup/InfoToolTip/InfoToolTip";
 
 import * as auth from "../utils/auth";
 
@@ -25,6 +23,11 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
   const [popup, setPopup] = useState(null);
+  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
+  const [tooltipStatus, setTooltipStatus] = useState({
+    isSuccess: false,
+    message: "",
+  });
 
   const [cards, setCards] = useState([]);
 
@@ -36,9 +39,22 @@ function App() {
       .register(email, password)
       .then(() => {
         console.log("Registration successful");
+        setTooltipStatus({
+          isSuccess: true,
+          message: "¡Te has registrado exitosamente!",
+        });
         navigate("/signin");
       })
-      .catch(console.error);
+      .catch((error) => {
+        console.log(`Error during registration: ${error}`);
+        setTooltipStatus({
+          isSuccess: false,
+          message: "Uy, algo salió mal. Por favor, inténtalo de nuevo.",
+        });
+      })
+      .finally(() => {
+        setIsInfoTooltipOpen(true);
+      });
   };
 
   const handleLogin = ({ email, password }) => {
@@ -52,20 +68,31 @@ function App() {
       .then((data) => {
         if (data.token) {
           return auth.login();
+        } else {
+          return Promise.reject("No se recibió un token de autenticación");
         }
       })
-      .then((userData) => {
-        setCurrentUser(userData);
+      .then((authData) => {
+        setCurrentUser(authData.data);
         setIsLoggedIn(true);
-
+        return api.getUserData();
+      })
+      .then((profileData) => {
+        setCurrentUser((prev) => ({ ...prev, ...profileData }));
+        return api.getInitialCards();
+      })
+      .then((cards) => {
+        setCards(cards);
         const redirectPath = location.state?.from?.pathname || "/";
         navigate(redirectPath);
       })
       .catch((error) => {
         console.error(error);
-        alert(
-          "Error en el inicio de sesión. Por favor, verifica tus credenciales.",
-        );
+        setTooltipStatus({
+          isSuccess: false,
+          message: "Uy, algo salió mal. Por favor, inténtalo de nuevo.",
+        });
+        setIsInfoTooltipOpen(true);
       });
   };
 
@@ -74,6 +101,7 @@ function App() {
       .logout()
       .then(() => {
         console.log("User logged out successfully");
+        setIsLoggedIn(false);
         navigate("/signin");
       })
       .catch(console.error);
@@ -87,10 +115,28 @@ function App() {
     setPopup(null);
   }
 
+  const handleCloseInfoTooltip = () => {
+    setIsInfoTooltipOpen(false);
+  };
+
   useEffect(() => {
-    api.getUserData().then((data) => {
-      setCurrentUser(data);
-    });
+    auth
+      .login()
+      .then((authData) => {
+        setCurrentUser(authData.data);
+        setIsLoggedIn(true);
+        return api.getUserData();
+      })
+      .then((profileData) => {
+        setCurrentUser((prev) => ({ ...prev, ...profileData }));
+        return api.getInitialCards();
+      })
+      .then((cards) => {
+        setCards(cards);
+      })
+      .catch((error) => {
+        console.log(`Error getting the full user information: ${error}`);
+      });
   }, []);
 
   const handleUpdateUser = (data) => {
@@ -121,6 +167,11 @@ function App() {
       .catch((error) => console.error(error));
   }
 
+  function confirmationCardDelete(card) {
+    handleOpenPopup();
+    handleCardDelete(card);
+  }
+
   async function handleCardDelete(card) {
     await api
       .deleteCardData(card._id)
@@ -131,17 +182,6 @@ function App() {
         handleClosePopup();
       })
       .catch((error) => console.error(error));
-  }
-
-  useEffect(() => {
-    api.getInitialCards().then((data) => {
-      setCards(data);
-    });
-  }, []);
-
-  function confirmationCardDelete() {
-    handleOpenPopup();
-    handleCardDelete();
   }
 
   async function handleAddPlaceSubmit(data) {
@@ -185,12 +225,63 @@ function App() {
               )
             }
           />
-          <Route path="/signin" element={<Login handleLogin={handleLogin} />} />
+          <Route
+            path="/signin"
+            element={
+              isLoggedIn ? (
+                <Navigate to="/" replace />
+              ) : (
+                <Login handleLogin={handleLogin} />
+              )
+            }
+          />
           <Route
             path="/signup"
-            element={<Register handleRegistration={handleRegistration} />}
+            element={
+              isLoggedIn ? (
+                <Navigate to="/" replace />
+              ) : (
+                <Register handleRegistration={handleRegistration} />
+              )
+            }
+          />
+          {/* <Route
+            path="/signup"
+            element={
+              isLoggedIn ? (
+                <Navigate to="/" replace />
+              ) : (
+                <>
+                  <Register handleRegistration={handleRegistration} />
+                  {isInfoTooltipOpen && (
+                    <InfoTooltip
+                      isSuccess={tooltipStatus.isSuccess}
+                      message={tooltipStatus.message}
+                      onClose={handleCloseInfoTooltip}
+                    />
+                  )}
+                </>
+              )
+            }
+          /> */}
+          <Route
+            path="*"
+            element={
+              isLoggedIn ? (
+                <Navigate to="/" replace />
+              ) : (
+                <Navigate to="/signin" replace />
+              )
+            }
           />
         </Routes>
+        {isInfoTooltipOpen && (
+          <InfoTooltip
+            isSuccess={tooltipStatus.isSuccess}
+            message={tooltipStatus.message}
+            onClose={handleCloseInfoTooltip}
+          />
+        )}
         <Footer />
       </div>
     </CurrentUserContext.Provider>

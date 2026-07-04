@@ -221,4 +221,14 @@
     max-width: 75vw;
     padding: 0;
   }
+
+  .popup__info-tooltip {
+    max-width: 280px;
+    max-height: 308px;
+  }
+
+  .popup__title-info-tooltip {
+    font-size: 20px;
+    line-height: 25px;
+  }
 }

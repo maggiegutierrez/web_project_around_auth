@@ -8,7 +8,7 @@ This project ventures into put together front-end techonology and back-end funct
 
 ## Live Demo
 
-🌐 **[Live Project](https://maggiegutierrez.github.io/web_project_around_auth/)**
+🌐 **[Live Project](web-project-around-auth-five.vercel.app)**
 
 ## Features
 

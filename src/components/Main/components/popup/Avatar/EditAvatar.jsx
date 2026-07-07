@@ -1,8 +1,8 @@
-import { useRef, useContext } from "react";
+import { useState, useContext } from "react";
 import CurrentUserContext from "../../../../../contexts/CurrentUserContext";
 
 export default function EditAvatar() {
-  const inputAvatarRef = useRef();
+  const [avatar, setAvatar] = useState("");
   const userContext = useContext(CurrentUserContext);
   const onUpdateAvatar = userContext.handleUpdateAvatar;
 
@@ -10,7 +10,7 @@ export default function EditAvatar() {
     event.preventDefault();
 
     onUpdateAvatar({
-      avatar: inputAvatarRef.current.value,
+      avatar: avatar,
     });
   };
 
@@ -28,10 +28,15 @@ export default function EditAvatar() {
         placeholder="Enlace a la imagen"
         type="url"
         required
-        ref={inputAvatarRef}
+        value={avatar}
+        onChange={(e) => setAvatar(e.target.value)}
       />
       <span className="image-change-input-error popup__input-error"></span>
-      <button className="button popup__button" type="submit">
+      <button
+        className="button popup__button"
+        type="submit"
+        disabled={!avatar.trim()}
+      >
         Guardar
       </button>
     </form>

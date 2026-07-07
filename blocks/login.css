@@ -62,6 +62,11 @@
   transition: opacity 0.4s ease;
 }
 
+.login__button:disabled {
+  color: black;
+  cursor: not-allowed;
+}
+
 .login__signin {
   font-weight: 400;
   font-size: 14px;

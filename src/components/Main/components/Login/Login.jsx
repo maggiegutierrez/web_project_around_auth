@@ -47,7 +47,11 @@ const Login = ({ handleLogin }) => {
           value={data.password}
           onChange={handleChange}
         />
-        <button type="submit" className="login__button">
+        <button
+          type="submit"
+          className="login__button"
+          disabled={!data.email || !data.password}
+        >
           Inicia sesión
         </button>
       </form>

@@ -1,17 +1,14 @@
-import { useContext, useRef } from "react";
+import { useContext, useState, useRef } from "react";
 import CurrentUserContext from "../../../../../contexts/CurrentUserContext";
 
 export default function NewCard() {
-  const nameInputRef = useRef();
-  const linkInputRef = useRef();
+  const [name, setName] = useState("");
+  const [link, setLink] = useState("");
   const userContext = useContext(CurrentUserContext);
   const onAddPlaceSubmit = userContext.handleAddPlaceSubmit;
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    const name = nameInputRef.current.value;
-    const link = linkInputRef.current.value;
     onAddPlaceSubmit({ name, link });
   };
 
@@ -31,7 +28,8 @@ export default function NewCard() {
         maxLength="30"
         required
         type="text"
-        ref={nameInputRef}
+        value={name}
+        onChange={(e) => setName(e.target.value)}
       />
       <span className="place-input-error popup__input-error"></span>
       <input
@@ -41,10 +39,15 @@ export default function NewCard() {
         placeholder="Enlace a la imagen"
         required
         type="url"
-        ref={linkInputRef}
+        value={link}
+        onChange={(e) => setLink(e.target.value)}
       />
       <span className="link-input-error popup__input-error"></span>
-      <button className="button popup__button" type="submit">
+      <button
+        className="button popup__button"
+        type="submit"
+        disabled={!name.trim() || !link.trim()}
+      >
         Crear
       </button>
     </form>

@@ -56,7 +56,11 @@ export default function EditProfile(props) {
         onChange={handleDescriptionChange}
       />
       <span className="about-input-error popup__input-error"></span>
-      <button className="button popup__button" type="submit">
+      <button
+        className="button popup__button"
+        type="submit"
+        disabled={!name.trim() || !description.trim()}
+      >
         Guardar
       </button>
     </form>

@@ -45,7 +45,11 @@ const Register = ({ handleRegistration }) => {
           value={data.password}
           onChange={handleChange}
         />
-        <button type="submit" className="register__button">
+        <button
+          type="submit"
+          className="register__button"
+          disabled={!data.email || !data.password}
+        >
           Regístrate
         </button>
       </form>

@@ -62,6 +62,11 @@
   transition: opacity 0.4s ease;
 }
 
+.register__button:disabled {
+  color: black;
+  cursor: not-allowed;
+}
+
 .register__signup {
   font-weight: 400;
   font-size: 14px;

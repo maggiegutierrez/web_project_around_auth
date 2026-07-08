@@ -1,11 +1,17 @@
 import { useContext, useState, useRef } from "react";
 import CurrentUserContext from "../../../../../contexts/CurrentUserContext";
+import { isImageUrl } from "../../../../../utils/validators";
 
 export default function NewCard() {
   const [name, setName] = useState("");
   const [link, setLink] = useState("");
   const userContext = useContext(CurrentUserContext);
   const onAddPlaceSubmit = userContext.handleAddPlaceSubmit;
+
+  const linkError =
+    link.trim() && !isImageUrl(link)
+      ? "El enlace debe ser una imagen válida"
+      : "";
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -34,7 +40,7 @@ export default function NewCard() {
       <span className="place-input-error popup__input-error"></span>
       <input
         id="link-input"
-        className="popup__input popup__input_type_url"
+        className={`popup__input popup__input_type_url ${linkError ? "popup__input_type_error" : ""}`}
         name="link"
         placeholder="Enlace a la imagen"
         required
@@ -42,11 +48,16 @@ export default function NewCard() {
         value={link}
         onChange={(e) => setLink(e.target.value)}
       />
-      <span className="link-input-error popup__input-error"></span>
+      <span
+        className={`link-input-error popup__input-error ${linkError ? "popup__input-error_active" : ""}`}
+      >
+        {linkError}
+      </span>
+
       <button
         className="button popup__button"
         type="submit"
-        disabled={!name.trim() || !link.trim()}
+        disabled={!name.trim() || !link.trim() || !isImageUrl(link)}
       >
         Crear
       </button>

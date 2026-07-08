@@ -9,6 +9,16 @@ export default function EditProfile(props) {
   const [description, setDescription] = useState(userContext.currentUser.about);
   const [avatar, setAvatar] = useState(userContext.currentUser.avatar);
 
+  const nameError =
+    name.trim() && name.trim().length < 2
+      ? "El nombre debe tener al menos 2 caracteres"
+      : "";
+
+  const descriptionError =
+    description.trim() && description.trim().length < 2
+      ? "La descripción debe tener al menos 2 caracteres"
+      : "";
+
   const handleNameChange = (event) => {
     setName(event.target.value);
   };
@@ -32,7 +42,7 @@ export default function EditProfile(props) {
     >
       <input
         id="name-input"
-        className="popup__input popup__input_type_name"
+        className={`popup__input popup__input_type_name ${nameError ? "popup__input_type_error" : ""}`}
         name="name"
         placeholder="Nombre"
         type="text"
@@ -42,10 +52,14 @@ export default function EditProfile(props) {
         value={name}
         onChange={handleNameChange}
       />
-      <span className="name-input-error popup__input-error"></span>
+      <span
+        className={`name-input-error popup__input-error ${nameError ? "popup__input-error_active" : ""}`}
+      >
+        {nameError}
+      </span>
       <input
         id="about-input"
-        className="popup__input popup__input_type_about"
+        className={`popup__input popup__input_type_about ${descriptionError ? "popup__input_type_error" : ""}`}
         name="about"
         placeholder="Acerca de mí"
         type="text"
@@ -55,11 +69,20 @@ export default function EditProfile(props) {
         value={description}
         onChange={handleDescriptionChange}
       />
-      <span className="about-input-error popup__input-error"></span>
+      <span
+        className={`about-input-error popup__input-error ${descriptionError ? "popup__input-error_active" : ""}`}
+      >
+        {descriptionError}
+      </span>
       <button
         className="button popup__button"
         type="submit"
-        disabled={!name.trim() || !description.trim()}
+        disabled={
+          !name.trim() ||
+          !description.trim() ||
+          !!nameError ||
+          !!descriptionError
+        }
       >
         Guardar
       </button>
